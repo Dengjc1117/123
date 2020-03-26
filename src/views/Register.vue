@@ -10,9 +10,17 @@
       <van-field
         v-model="form.username"
         name="用户名"
-        placeholder="用户名 / 手机号码"
+        placeholder="用户名 /手机号码"
         :rules="[{ required: true, message: '请填写用户名/手机号码' }]"
       />
+
+      <van-field
+        v-model="form.nickname"
+        name="昵称"
+        placeholder="昵称"
+        :rules="[{ required: true, message: '请填写昵称' }]"
+      />
+
       <van-field
         v-model="form.password"
         type="password"
@@ -21,12 +29,9 @@
         :rules="[{ required: true, message: '请填写密码' }]"
       />
       <div class="btn">
-        <van-button round block type="info" native-type="submit">登录</van-button>
+        <van-button round block type="info" native-type="submit">注册</van-button>
       </div>
     </van-form>
-    <div class="register">
-      <router-link to="/register">注册账号</router-link>
-    </div>
   </div>
 </template>
 
@@ -36,6 +41,7 @@ export default {
     return {
       form: {
         username: "",
+        nickname: "",
         password: ""
       }
     };
@@ -44,8 +50,9 @@ export default {
     onSubmit() {
       // console.log('submit', this.form);
       this.$axios({
-        url: "/login",
-        method: "post"
+        url: "/register",
+        method: "POST",
+        data: this.form
       }).then(response => {
         console.log(response);
       });
@@ -69,12 +76,7 @@ export default {
       color: #cc3300;
     }
   }
-  .register {
-    position: absolute;
-    right: 30/360 * 100vw;
-    color: #888;
-    margin-top: 10/360 * 100vw;
-  }
+
   .form {
     .van-cell {
       font-size: 16px;
