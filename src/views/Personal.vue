@@ -1,14 +1,6 @@
 <template>
   <div class="box">
-    <div class="nav">
-      <div @click="$router.back()">
-        <span class="iconfont iconjiantou2"></span>
-      </div>
-      <strong>个人中心</strong>
-      <div @click="$router.push('/')">
-        <span class="iconfont iconshouye"></span>
-      </div>
-    </div>
+    <Navigate title="个人中心" :homeShow="true"></Navigate>
     <div class="head">
       <div class="avatar">
         <img :src="$axios.defaults.baseURL + userInfo.head_img" />
@@ -25,8 +17,10 @@
 </template>
 
 <script>
-//导入子组件
+//导入 列表 子组件
 import Listber from "@/components/Listber.vue";
+//导入顶部导航 子组件
+import Navigate from "@/components/Navigate.vue";
 //导入日期插件
 import moment from "moment";
 export default {
@@ -58,14 +52,15 @@ export default {
   },
   //注册组件
   components: {
-    Listber
+    Listber,
+    Navigate
   },
   methods: {
     exitClick: function() {
       this.$dialog
         .confirm({
           //   title: '提示',
-          message: "确定要退出账号吗?"
+          message: "确定要退出吗?"
         })
         .then(() => {
           localStorage.removeItem("userInfo");
@@ -79,15 +74,6 @@ export default {
 
 <style scoped lang="less" >
 .box {
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    padding: 15/360 * 100vw 25/360 * 100vw;
-    background: #d3d2cd;
-    .iconfont {
-      font-size: 17px;
-    }
-  }
   .head {
     display: flex;
     justify-content: space-between;
