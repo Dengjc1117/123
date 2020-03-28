@@ -35,7 +35,7 @@
   </div>
 </template>
 
-<script>
+<script >
 export default {
   data() {
     return {
@@ -61,7 +61,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style scoped lang="less">
 .box {
   padding: 20/360 * 100vw;
   .shut {

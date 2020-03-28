@@ -45,16 +45,21 @@ export default {
       // console.log('submit', this.form);
       this.$axios({
         url: "/login",
-        method: "post"
+        method: "post",
+        data: this.form
       }).then(response => {
-        console.log(response);
+        let { data, message } = response.data;
+        console.log(data);
+        console.log(message);
+        localStorage.setItem("userInfo", JSON.stringify(data));
+        this.$toast.success(message);
       });
     }
   }
 };
 </script>
 
-<style lang="less">
+<style scoped lang="less">
 .box {
   padding: 20/360 * 100vw;
   .shut {

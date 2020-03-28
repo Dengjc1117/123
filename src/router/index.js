@@ -8,8 +8,13 @@ const routes = [
   }, {
     path: "/register",
     component: () => import("@/views/Register.vue")
+  },
+  {
+    path: "/personal",
+    component: () => import("@/views/Personal.vue")
   }
 ]
+
 
 const router = new VueRouter({
   base: process.env.BASE_URL,
