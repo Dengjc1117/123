@@ -49,10 +49,9 @@ export default {
         data: this.form
       }).then(response => {
         let { data, message } = response.data;
-        console.log(data);
-        console.log(message);
         localStorage.setItem("userInfo", JSON.stringify(data));
         this.$toast.success(message);
+        this.$router.push("/personal");
       });
     }
   }

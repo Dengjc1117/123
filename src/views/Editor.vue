@@ -8,8 +8,25 @@
       <van-uploader :after-read="afterRead" class="upload" />
     </div>
     <!-- 信息 -->
-    <Listber label="昵称" :tips="userInfo.nickname"></Listber>
-    <Listber label="密码" tips="******"></Listber>
+    <Listber label="昵称" :tips="userInfo.nickname" @click.native="editshow=true"></Listber>
+    <van-dialog
+      v-model="editshow"
+      title="修改昵称"
+      show-cancel-button
+      @confirm="editNickName"
+      @cancel="cancelEdit"
+    >
+      <van-cell-group>
+        <van-field v-model="info.nickname" placeholder="请输入昵称" />
+      </van-cell-group>
+    </van-dialog>
+
+    <Listber label="密码" tips="******" @click.native="editpwd=true"></Listber>
+    <van-dialog v-model="editpwd" title="修改密码" show-cancel-button @confirm="editPassword">
+      <van-cell-group>
+        <van-field v-model="info.password" placeholder="请输入新密码" type="password" />
+      </van-cell-group>
+    </van-dialog>
     <Listber label="性别" :tips="['女','男'][userInfo.gender]" @click.native="openSelect"></Listber>
     <van-action-sheet
       v-model="show"
@@ -26,9 +43,6 @@
 import Navigate from "@/components/Navigate.vue";
 //导入 列表 组件
 import Listber from "@/components/Listber.vue";
-//上拉菜单组件
-// import { Toast } from "vant";
-
 export default {
   mounted() {
     let userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -41,13 +55,20 @@ export default {
     }).then(response => {
       //将请求回来数据存入组件data中.
       this.userInfo = response.data.data;
+      this.info.nickname = response.data.data.nickname;
     });
   },
   data() {
     return {
       userInfo: {},
+      info: {
+        nickname: "",
+        password: ""
+      },
       token: "",
       show: false,
+      editshow: false,
+      editpwd: false,
       actions: [
         { name: "男", value: 1 },
         { name: "女", value: 0 }
@@ -105,6 +126,45 @@ export default {
           this.$toast.success("头像" + message);
         });
       });
+    },
+    editNickName() {
+      this.editInfo({ nickname: this.info.nickname }, response => {
+        const { message, data } = response.data;
+        this.userInfo.nickname = data.nickname;
+        this.$toast.success("昵称" + message);
+      });
+    },
+    cancelEdit() {
+      this.info.nickname = this.userInfo.nickname;
+    },
+    //确定 修改密码
+    editPassword() {
+      this.editInfo({ password: this.info.password }, response => {
+        const { message } = response.data;
+
+        const toast = this.$toast.loading({
+          duration: 0, // 持续展示 toast
+          forbidClick: true,
+          message: "修改成功,请重新登录 3 后返回"
+        });
+
+        let second = 3;
+        const timer = setInterval(() => {
+          second--;
+          if (second) {
+            toast.message = `修改成功,请重新登录${second}后返回`;
+          } else {
+            localStorage.removeItem("userInfo");
+            this.$router.replace("/login");
+            clearInterval(timer);
+            // 手动清除 Toast
+            this.$toast.clear();
+          }
+        }, 1000);
+      });
+    },
+    clearEdit() {
+      this.info.password = "";
     }
   },
   components: {
