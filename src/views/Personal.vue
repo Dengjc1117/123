@@ -1,16 +1,18 @@
 <template>
   <div class="box">
     <Navigate title="个人中心" :homeShow="true"></Navigate>
-    <div class="head">
-      <div class="avatar">
-        <img :src="$axios.defaults.baseURL + userInfo.head_img" />
+    <router-link to="/editor">
+      <div class="head">
+        <div class="avatar">
+          <img :src="$axios.defaults.baseURL + userInfo.head_img" />
+        </div>
+        <div class="userText">
+          <p>{{userInfo.nickname}}</p>
+          <span>{{moment(userInfo.create_date).format('YYYY-MM-DD')}}</span>
+        </div>
+        <div class="iconfont iconjiantou1"></div>
       </div>
-      <div class="userText">
-        <p>{{userInfo.nickname}}</p>
-        <span>{{moment(userInfo.create_date).format('YYYY-MM-DD')}}</span>
-      </div>
-      <div class="iconfont iconjiantou1"></div>
-    </div>
+    </router-link>
     <Listber v-for="(item,index) in rows" :key="index" :label="item.label" :tips="item.tips"></Listber>
     <Listber label="退出" @click.native="exitClick"></Listber>
   </div>
