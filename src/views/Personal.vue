@@ -7,13 +7,23 @@
           <img :src="$axios.defaults.baseURL + userInfo.head_img" />
         </div>
         <div class="userText">
-          <p>{{userInfo.nickname}}</p>
+          <p>
+            <span v-if="userInfo.gender == 1" class="iconfont iconxingbienan"></span>
+            <span v-if="userInfo.gender == 0" class="iconfont iconxingbienv"></span>
+            {{userInfo.nickname}}
+          </p>
           <span>{{moment(userInfo.create_date).format('YYYY-MM-DD')}}</span>
         </div>
         <div class="iconfont iconjiantou1"></div>
       </div>
     </router-link>
-    <Listber v-for="(item,index) in rows" :key="index" :label="item.label" :tips="item.tips"></Listber>
+    <Listber
+      v-for="(item,index) in rows"
+      :key="index"
+      :label="item.label"
+      :tips="item.tips"
+      :path="item.path"
+    ></Listber>
     <Listber label="退出" @click.native="exitClick"></Listber>
   </div>
 </template>
@@ -44,9 +54,9 @@ export default {
   data() {
     return {
       rows: [
-        { label: "我的关注", tips: "关注的用户" },
-        { label: "我的跟帖", tips: "跟帖 / 回复" },
-        { label: "我的收藏", tips: "文章 / 视频" }
+        { label: "我的关注", tips: "关注的用户", path: "/follow" },
+        { label: "我的跟帖", tips: "跟帖 / 回复", path: "/comments" },
+        { label: "我的收藏", tips: "文章 / 视频", path: "/star" }
       ],
       userInfo: {},
       moment
@@ -88,12 +98,19 @@ export default {
         height: 70/360 * 100vw;
         margin-right: 5px;
         border-radius: 50%;
+        object-fit: cover;
       }
     }
     .userText {
       flex: 1;
       p {
         font-size: 16px;
+        .iconxingbienv {
+          color: pink;
+        }
+        .iconxingbienan {
+          color: rgb(41, 177, 240);
+        }
       }
       span {
         font-size: 16px;

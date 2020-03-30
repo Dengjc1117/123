@@ -1,18 +1,16 @@
 <template>
-  <div class="list">
-    <div class="left">
-      <span>{{label }}</span>
-    </div>
+  <router-link class="list" :to="path || '#'">
+    <div class="left">{{label }}</div>
     <div class="right">
       <span>{{tips}}</span>
       <span class="iconfont iconjiantou1"></span>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
 export default {
-  props: ["label", "tips"]
+  props: ["label", "tips", "path"]
 };
 </script>
 

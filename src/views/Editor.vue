@@ -127,6 +127,7 @@ export default {
         });
       });
     },
+    //昵称修改
     editNickName() {
       this.editInfo({ nickname: this.info.nickname }, response => {
         const { message, data } = response.data;
@@ -134,6 +135,7 @@ export default {
         this.$toast.success("昵称" + message);
       });
     },
+    //取消修改昵称
     cancelEdit() {
       this.info.nickname = this.userInfo.nickname;
     },
